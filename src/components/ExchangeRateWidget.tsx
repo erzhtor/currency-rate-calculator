@@ -3,23 +3,28 @@ import * as React from "react";
 import * as ReactInterval from "react-interval";
 import { Currency } from "../enums";
 import { CurrencyRate } from "../types/CurrencyRate";
-import "./App.css";
-import logo from "./logo.svg";
+import { ExchangeRate } from "./ExchangeRate";
 
 type ExchangeRateWidgetState = {
-	rates: CurrencyRate[];
+	rate?: CurrencyRate;
+	from: Currency;
+	to: Currency;
+	amount?: number;
 };
 
 type ExchangeRateWidgetProps = {
 	apiUrl: string;
 };
 
+const CURRENCIES = [Currency.GBP, Currency.USD, Currency.EUR];
+
 export class ExchangeRateWidget extends React.Component<
 	ExchangeRateWidgetProps,
 	ExchangeRateWidgetState
 > {
 	state: ExchangeRateWidgetState = {
-		rates: []
+		from: Currency.USD,
+		to: Currency.GBP
 	};
 
 	constructor(props: any) {
@@ -32,36 +37,63 @@ export class ExchangeRateWidget extends React.Component<
 	}
 
 	async fetchData() {
+		const { from } = this.state;
 		try {
-			const { data } = await axios.get<CurrencyRate[]>(
-				this.props.apiUrl,
-				{
-					params: {
-						base: Currency.USD,
-						symbols: [Currency.USD, Currency.EUR, Currency.GBP]
-					}
+			const { data } = await axios.get<CurrencyRate>(this.props.apiUrl, {
+				params: {
+					base: from,
+					symbols: CURRENCIES
 				}
-			);
-			this.setState({ rates: data });
+			});
+			this.setState({ rate: data });
 		} catch (err) {
 			console.error(err);
 		}
 	}
 
 	public render() {
+		const { rate, amount, from, to } = this.state;
+		if (!rate) {
+			return "loading";
+		}
+
+		const ratio = rate.rates[to];
+		if (!ratio) {
+			return "no exchange rate";
+		}
+
 		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h1 className="App-title">Welcome to React</h1>
-				</header>
+			<React.Fragment>
 				<ReactInterval
 					enabled={true}
 					timeout={10000}
 					callback={this.fetchData}
 				/>
-				{JSON.stringify(this.state.rates)}
-			</div>
+				{rate && (
+					<ExchangeRate
+						amount={amount}
+						from={from}
+						to={to}
+						ratio={ratio}
+						currencies={CURRENCIES}
+					>
+						<ExchangeRate.Header />
+						<ExchangeRate.From
+							onCurrencyChange={currency =>
+								this.setState({ from: currency })
+							}
+							onAmountChange={value =>
+								this.setState({ amount: value })
+							}
+						/>
+						<ExchangeRate.To
+							onCurrencyChange={currency =>
+								this.setState({ from: currency })
+							}
+						/>
+					</ExchangeRate>
+				)}
+			</React.Fragment>
 		);
 	}
 }
