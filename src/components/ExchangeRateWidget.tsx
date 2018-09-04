@@ -1,11 +1,13 @@
 import axios from "axios";
 import * as React from "react";
 import * as ReactInterval from "react-interval";
+import { Currency } from "../enums";
+import { CurrencyRate } from "../types/CurrencyRate";
 import "./App.css";
 import logo from "./logo.svg";
 
 type ExchangeRateWidgetState = {
-	rates: any[];
+	rates: CurrencyRate[];
 };
 
 type ExchangeRateWidgetProps = {
@@ -31,12 +33,15 @@ export class ExchangeRateWidget extends React.Component<
 
 	async fetchData() {
 		try {
-			const { data } = await axios.get<any>(this.props.apiUrl, {
-				params: {
-					base: "USD",
-					symbols: ["USD", "GBP", "EUR"]
+			const { data } = await axios.get<CurrencyRate[]>(
+				this.props.apiUrl,
+				{
+					params: {
+						base: Currency.USD,
+						symbols: [Currency.USD, Currency.EUR, Currency.GBP]
+					}
 				}
-			});
+			);
 			this.setState({ rates: data });
 		} catch (err) {
 			console.error(err);

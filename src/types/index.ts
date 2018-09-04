@@ -1,0 +1,1 @@
+export { CurrencyRate } from "./CurrencyRate";
