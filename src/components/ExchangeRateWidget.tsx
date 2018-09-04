@@ -10,6 +10,7 @@ type ExchangeRateWidgetState = {
 	from: Currency;
 	to: Currency;
 	amount?: number;
+	balance: { [key in Currency]: number };
 };
 
 type ExchangeRateWidgetProps = {
@@ -24,7 +25,12 @@ export class ExchangeRateWidget extends React.Component<
 > {
 	state: ExchangeRateWidgetState = {
 		from: Currency.USD,
-		to: Currency.GBP
+		to: Currency.GBP,
+		balance: {
+			[Currency.EUR]: 3333333.123,
+			[Currency.GBP]: 2222222.234,
+			[Currency.USD]: 1111111.34
+		}
 	};
 
 	constructor(props: any) {
@@ -52,7 +58,7 @@ export class ExchangeRateWidget extends React.Component<
 	}
 
 	public render() {
-		const { rate, amount, from, to } = this.state;
+		const { rate, amount, from, to, balance } = this.state;
 		if (!rate) {
 			return "loading";
 		}
@@ -82,11 +88,13 @@ export class ExchangeRateWidget extends React.Component<
 							onCurrencyChange={currency =>
 								this.setState({ from: currency })
 							}
+							balance={balance[from]}
 							onAmountChange={value =>
 								this.setState({ amount: value })
 							}
 						/>
 						<ExchangeRate.To
+							balance={balance[to]}
 							onCurrencyChange={currency =>
 								this.setState({ from: currency })
 							}

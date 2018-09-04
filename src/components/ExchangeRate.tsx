@@ -40,11 +40,12 @@ export const ExchangeRateHeader: React.StatelessComponent = () => (
 type ExchangeRateFromProps = {
 	onCurrencyChange: (currency: Currency) => void;
 	onAmountChange: (amount: number) => void;
+	balance: number;
 };
 
 export const ExchangeRateFrom: React.StatelessComponent<
 	ExchangeRateFromProps
-> = ({ onAmountChange }) => (
+> = ({ onAmountChange, balance }) => (
 	<ExchangeRateContext.Consumer>
 		{({ from, amount }) => (
 			<div>
@@ -57,9 +58,12 @@ export const ExchangeRateFrom: React.StatelessComponent<
 							onAmountChange(parseFloat(event.target.value))
 						}
 					/>
-					{/* TODO: you have balance  */}
-					{/* TODO: onCurrencyChange */}
 				</div>
+				<div>
+					You have {getCurrencySymbol(from)}
+					{balance}
+				</div>
+				{/* TODO: onCurrencyChange */}
 			</div>
 		)}
 	</ExchangeRateContext.Consumer>
@@ -67,19 +71,24 @@ export const ExchangeRateFrom: React.StatelessComponent<
 
 type ExchangeRateToProps = {
 	onCurrencyChange: (currency: Currency) => void;
+	balance: number;
 };
 
 export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
-	onCurrencyChange
+	onCurrencyChange,
+	balance
 }) => (
 	<ExchangeRateContext.Consumer>
 		{({ to, amount, ratio }) => (
 			<div>
 				<div>
 					{to} <span>{amount ? amount * ratio : null}</span>
-					{/* TODO: you have balance  */}
-					{/* TODO: onCurrencyChange */}
 				</div>
+				<div>
+					You have {getCurrencySymbol(to)}
+					{balance}
+				</div>
+				{/* TODO: onCurrencyChange */}
 			</div>
 		)}
 	</ExchangeRateContext.Consumer>
