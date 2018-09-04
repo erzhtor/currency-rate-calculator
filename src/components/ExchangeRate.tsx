@@ -45,12 +45,24 @@ type ExchangeRateFromProps = {
 
 export const ExchangeRateFrom: React.StatelessComponent<
 	ExchangeRateFromProps
-> = ({ onAmountChange, balance }) => (
+> = ({ onAmountChange, balance, onCurrencyChange }) => (
 	<ExchangeRateContext.Consumer>
-		{({ from, amount }) => (
+		{({ from, amount, currencies }) => (
 			<div>
 				<div>
-					{from}{" "}
+					{from}
+					<select
+						value={from}
+						onChange={event =>
+							onCurrencyChange(event.target.value as Currency)
+						}
+					>
+						{currencies.map(currency => (
+							<option value={currency} key={currency}>
+								{currency}
+							</option>
+						))}
+					</select>
 					<input
 						type="number"
 						value={amount}
@@ -63,7 +75,6 @@ export const ExchangeRateFrom: React.StatelessComponent<
 					You have {getCurrencySymbol(from)}
 					{balance}
 				</div>
-				{/* TODO: onCurrencyChange */}
 			</div>
 		)}
 	</ExchangeRateContext.Consumer>
@@ -79,16 +90,27 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 	balance
 }) => (
 	<ExchangeRateContext.Consumer>
-		{({ to, amount, ratio }) => (
+		{({ to, amount, ratio, currencies }) => (
 			<div>
 				<div>
-					{to} <span>{amount ? amount * ratio : null}</span>
+					<select
+						value={to}
+						onChange={event =>
+							onCurrencyChange(event.target.value as Currency)
+						}
+					>
+						{currencies.map(currency => (
+							<option value={currency} key={currency}>
+								{currency}
+							</option>
+						))}
+					</select>
+					<span>{amount ? amount * ratio : null}</span>
 				</div>
 				<div>
 					You have {getCurrencySymbol(to)}
 					{balance}
 				</div>
-				{/* TODO: onCurrencyChange */}
 			</div>
 		)}
 	</ExchangeRateContext.Consumer>

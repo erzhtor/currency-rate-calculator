@@ -63,7 +63,7 @@ export class ExchangeRateWidget extends React.Component<
 			return "loading";
 		}
 
-		const ratio = rate.rates[to];
+		const ratio = from === to ? 1 : rate.rates[to];
 		if (!ratio) {
 			return "no exchange rate";
 		}
@@ -96,7 +96,7 @@ export class ExchangeRateWidget extends React.Component<
 						<ExchangeRate.To
 							balance={balance[to]}
 							onCurrencyChange={currency =>
-								this.setState({ from: currency })
+								this.setState({ to: currency })
 							}
 						/>
 					</ExchangeRate>
