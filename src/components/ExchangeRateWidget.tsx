@@ -1,13 +1,24 @@
 import axios from "axios";
 import * as React from "react";
 import * as ReactInterval from "react-interval";
-
 import "./App.css";
-
 import logo from "./logo.svg";
 
-class App extends React.Component<any, any> {
-	state: any = {};
+type ExchangeRateWidgetState = {
+	rates: any[];
+};
+
+type ExchangeRateWidgetProps = {
+	apiUrl: string;
+};
+
+export class ExchangeRateWidget extends React.Component<
+	ExchangeRateWidgetProps,
+	ExchangeRateWidgetState
+> {
+	state: ExchangeRateWidgetState = {
+		rates: []
+	};
 
 	constructor(props: any) {
 		super(props);
@@ -20,16 +31,13 @@ class App extends React.Component<any, any> {
 
 	async fetchData() {
 		try {
-			const { data } = await axios.get<any>(
-				"https://api.exchangeratesapi.io/latest",
-				{
-					params: {
-						base: "USD",
-						symbols: ["USD", "GBP", "EUR"]
-					}
+			const { data } = await axios.get<any>(this.props.apiUrl, {
+				params: {
+					base: "USD",
+					symbols: ["USD", "GBP", "EUR"]
 				}
-			);
-			this.setState({ data });
+			});
+			this.setState({ rates: data });
 		} catch (err) {
 			console.error(err);
 		}
@@ -47,10 +55,8 @@ class App extends React.Component<any, any> {
 					timeout={10000}
 					callback={this.fetchData}
 				/>
-				<pre>{JSON.stringify(this.state.data)}</pre>
+				{JSON.stringify(this.state.rates)}
 			</div>
 		);
 	}
 }
-
-export default App;
