@@ -9,7 +9,8 @@ import { ExchangeRateTo } from "./ExchangeRateTo";
 type ExchangeRateProps = ExchangeRateContextDto;
 
 const StyledLayout = styled.article`
-	border: 1px dashed black;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 1px;
 	width: 500px;
 `;
 

@@ -2,15 +2,14 @@ import * as React from "react";
 import styled from "styled-components";
 import { Currency } from "../../enums/Currency";
 import { getCurrencySymbol } from "../../lib";
-import { CurrenciesRadio } from "./Common";
+import { CurrenciesRadio, StyledSection } from "./Common";
 import { ExchangeRateContext } from "./context";
 
-const StyledLayout = styled.section`
+const StyledLayout = styled(StyledSection)`
 	display: flex;
 	flex-direction: column;
 	height: 100px;
 	justify-content: space-around;
-	border: 1px dashed black;
 `;
 
 type ExchangeRateToProps = {
@@ -32,10 +31,10 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 						onChange={onCurrencyChange}
 						name="currency-to"
 					/>
-					<div>
-						{!ratio && "No exchange rate available"}
-						{ratio && amount ? amount * ratio : null}
-					</div>
+				</div>
+				<div>
+					{!ratio && "No exchange rate available"}
+					{ratio && amount ? (amount * ratio).toFixed(2) : null}
 				</div>
 				<div>
 					You have {getCurrencySymbol(to)}

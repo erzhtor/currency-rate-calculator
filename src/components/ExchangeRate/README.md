@@ -20,5 +20,6 @@ Example:
     balance={432532.12}
     onCurrencyChange={currency => console.log("Changed to currency", currency)}
   />
+  <ExchangeRate.Footer onSubmit={() => console.log("submitted")} />
 </ExchangeRate>
 ```

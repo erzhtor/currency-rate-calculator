@@ -2,15 +2,14 @@ import * as React from "react";
 import styled from "styled-components";
 import { Currency } from "../../enums/Currency";
 import { getCurrencySymbol } from "../../lib";
-import { CurrenciesRadio } from "./Common";
+import { CurrenciesRadio, StyledSection } from "./Common";
 import { ExchangeRateContext } from "./context";
 
-const StyledLayout = styled.section`
+const StyledLayout = styled(StyledSection)`
 	display: flex;
 	flex-direction: column;
 	height: 100px;
 	justify-content: space-around;
-	border: 1px dashed black;
 `;
 
 type ExchangeRateFromProps = {

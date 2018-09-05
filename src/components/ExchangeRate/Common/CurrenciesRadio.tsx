@@ -9,7 +9,7 @@ export const CurrenciesRadio: React.StatelessComponent<{
 }> = ({ currencies, value, onChange }) => (
 	<React.Fragment>
 		{currencies.map(currency => (
-			<span>
+			<span key={currency}>
 				<input
 					type="radio"
 					name={name}
