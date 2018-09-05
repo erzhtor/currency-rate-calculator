@@ -1,7 +1,16 @@
 import * as React from "react";
+import styled from "styled-components";
 import { Currency } from "../../enums/Currency";
 import { getCurrencySymbol } from "../../lib";
 import { ExchangeRateContext } from "./context";
+
+const StyledLayout = styled.section`
+	display: flex;
+	flex-direction: column;
+	height: 100px;
+	justify-content: space-around;
+	border: 1px dashed black;
+`;
 
 type ExchangeRateToProps = {
 	onCurrencyChange: (currency: Currency) => void;
@@ -14,7 +23,7 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 }) => (
 	<ExchangeRateContext.Consumer>
 		{({ to, amount, ratio, currencies }) => (
-			<div>
+			<StyledLayout>
 				<div>
 					<select
 						value={to}
@@ -34,7 +43,7 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 					You have {getCurrencySymbol(to)}
 					{balance}
 				</div>
-			</div>
+			</StyledLayout>
 		)}
 	</ExchangeRateContext.Consumer>
 );
