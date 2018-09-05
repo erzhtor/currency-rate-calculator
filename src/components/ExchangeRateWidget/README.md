@@ -1,5 +1,13 @@
 Example:
 
 ```jsx
-<ExchangeRateWidget apiUrl="http://localhost/api/rates/latest.json" />
+<ExchangeRateWidget
+    apiUrl={}
+    currencies={}
+    balance={}
+    defaultFrom={}
+    defaultTo={}
+    onCancel={}
+    onSubmit={}
+/>
 ```

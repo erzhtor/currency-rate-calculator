@@ -2,56 +2,71 @@ import axios from "axios";
 import * as React from "react";
 import * as ReactInterval from "react-interval";
 import { Currency } from "../../enums";
-import { getCurrencySymbol } from "../../lib";
 import { Balance } from "../../types/Balance";
 import { CurrencyRate } from "../../types/CurrencyRate";
 import { ExchangeRate } from "../ExchangeRate";
-import { AVAILABLE_CURRENCIES, CURRENT_BALANCE } from "./constants";
 
 type ExchangeRateWidgetState = {
 	rate?: CurrencyRate;
 	from: Currency;
 	to: Currency;
 	amount?: number;
-	balance: Balance;
 };
 
 type ExchangeRateWidgetProps = {
 	apiUrl: string;
+	onCancel: () => void;
+	onSubmit: (
+		param: {
+			from: Currency;
+			to: Currency;
+			amount?: number;
+			ratio?: number;
+		}
+	) => void;
+	currencies: Currency[];
+	defaultFrom: Currency;
+	defaultTo: Currency;
+	balance: Balance;
 };
 
 export class ExchangeRateWidget extends React.Component<
 	ExchangeRateWidgetProps,
 	ExchangeRateWidgetState
 > {
-	state: ExchangeRateWidgetState = {
-		from: Currency.USD,
-		to: Currency.GBP,
-		balance: CURRENT_BALANCE
-	};
-
-	constructor(props: any) {
+	constructor(props: ExchangeRateWidgetProps) {
 		super(props);
 		this.fetchData = this.fetchData.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+
+		const { defaultFrom, defaultTo } = props;
+		this.state = {
+			from: defaultFrom,
+			to: defaultTo
+		};
+
+		this.getExchangeRatio = this.getExchangeRatio.bind(this);
 	}
 
 	async componentWillMount() {
 		await this.fetchData();
 	}
 
-	onSubmit() {
+	handleSubmit() {
 		const { from, to, amount } = this.state;
-		alert(`Converting ${getCurrencySymbol(from)}${amount} to ${to}`);
+		const { onSubmit } = this.props;
+		const ratio = this.getExchangeRatio();
+		onSubmit({ ratio, from, to, amount });
 	}
 
 	async fetchData() {
 		const { from } = this.state;
+		const { currencies } = this.props;
 		try {
 			const { data } = await axios.get<CurrencyRate>(this.props.apiUrl, {
 				params: {
 					base: from,
-					symbols: AVAILABLE_CURRENCIES
+					symbols: currencies
 				}
 			});
 			this.setState({ rate: data });
@@ -60,13 +75,25 @@ export class ExchangeRateWidget extends React.Component<
 		}
 	}
 
+	getExchangeRatio() {
+		const { rate, from, to } = this.state;
+		if (!rate) {
+			return;
+		}
+
+		const ratio = from === to ? 1 : rate.rates[to];
+
+		return ratio;
+	}
+
 	public render() {
-		const { rate, amount, from, to, balance } = this.state;
+		const { rate, amount, from, to } = this.state;
 		if (!rate) {
 			return "loading";
 		}
 
-		const ratio = from === to ? 1 : rate.rates[to];
+		const ratio = this.getExchangeRatio();
+		const { onCancel, currencies, balance } = this.props;
 		return (
 			<React.Fragment>
 				<ReactInterval
@@ -80,7 +107,7 @@ export class ExchangeRateWidget extends React.Component<
 						from={from}
 						to={to}
 						ratio={ratio}
-						currencies={AVAILABLE_CURRENCIES}
+						currencies={currencies}
 					>
 						<ExchangeRate.Header />
 						<ExchangeRate.From
@@ -99,8 +126,8 @@ export class ExchangeRateWidget extends React.Component<
 							}
 						/>
 						<ExchangeRate.Footer
-							onSubmit={this.onSubmit}
-							onCancel={() => alert("canceled")}
+							onSubmit={this.handleSubmit}
+							onCancel={onCancel}
 						/>
 					</ExchangeRate>
 				)}
