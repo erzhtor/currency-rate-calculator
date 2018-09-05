@@ -99,6 +99,10 @@ export class ExchangeRateWidget extends React.Component<
 								this.setState({ to: currency })
 							}
 						/>
+						<ExchangeRate.Footer
+							onSubmit={() => "submitted"}
+							onCancel={() => alert("canceled")}
+						/>
 					</ExchangeRate>
 				)}
 			</React.Fragment>

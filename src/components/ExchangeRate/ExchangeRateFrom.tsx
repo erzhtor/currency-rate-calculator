@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { Currency } from "../../enums/Currency";
 import { getCurrencySymbol } from "../../lib";
+import { CurrenciesRadio } from "./Common";
 import { ExchangeRateContext } from "./context";
 
 const StyledLayout = styled.section`
@@ -25,19 +26,14 @@ export const ExchangeRateFrom: React.StatelessComponent<
 		{({ from, amount, currencies }) => (
 			<StyledLayout>
 				<div>
-					{from}
-					<select
+					<CurrenciesRadio
+						currencies={currencies}
 						value={from}
-						onChange={event =>
-							onCurrencyChange(event.target.value as Currency)
-						}
-					>
-						{currencies.map(currency => (
-							<option value={currency} key={currency}>
-								{currency}
-							</option>
-						))}
-					</select>
+						onChange={onCurrencyChange}
+						name="currency-to"
+					/>
+				</div>
+				<div>
 					<input
 						type="number"
 						value={amount}

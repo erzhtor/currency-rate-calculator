@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { Currency } from "../../enums/Currency";
 import { getCurrencySymbol } from "../../lib";
+import { CurrenciesRadio } from "./Common";
 import { ExchangeRateContext } from "./context";
 
 const StyledLayout = styled.section`
@@ -25,18 +26,12 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 		{({ to, amount, ratio, currencies }) => (
 			<StyledLayout>
 				<div>
-					<select
+					<CurrenciesRadio
+						currencies={currencies}
 						value={to}
-						onChange={event =>
-							onCurrencyChange(event.target.value as Currency)
-						}
-					>
-						{currencies.map(currency => (
-							<option value={currency} key={currency}>
-								{currency}
-							</option>
-						))}
-					</select>
+						onChange={onCurrencyChange}
+						name="currency-to"
+					/>
 					<span>{amount ? amount * ratio : null}</span>
 				</div>
 				<div>
