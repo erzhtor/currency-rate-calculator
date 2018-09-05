@@ -1,6 +1,6 @@
 import * as React from "react";
+import { ExchangeRateWidget } from "../ExchangeRateWidget";
 import "./App.css";
-import { ExchangeRateWidget } from "./ExchangeRateWidget";
 import logo from "./logo.svg";
 
 class App extends React.Component {

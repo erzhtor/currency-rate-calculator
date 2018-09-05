@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as React from "react";
 import * as ReactInterval from "react-interval";
-import { Currency } from "../enums";
-import { CurrencyRate } from "../types/CurrencyRate";
-import { ExchangeRate } from "./ExchangeRate";
+import { Currency } from "../../enums";
+import { CurrencyRate } from "../../types/CurrencyRate";
+import { ExchangeRate } from "../ExchangeRate";
 
 type ExchangeRateWidgetState = {
 	rate?: CurrencyRate;

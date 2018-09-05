@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Currency } from "../enums/Currency";
-import { getCurrencySymbol } from "../lib";
+import { Currency } from "../../enums/Currency";
+import { getCurrencySymbol } from "../../lib";
 
 const defaultExchangeRateContextValue: ExchangeRateContextDto = {
 	ratio: 1,
