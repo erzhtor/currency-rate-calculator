@@ -15,7 +15,7 @@ export const ExchangeRateHeader: React.StatelessComponent = () => (
 				{getCurrencySymbol(from)}
 				1=
 				{getCurrencySymbol(to)}
-				{ratio}
+				{ratio || "na"}
 			</StyledLayout>
 		)}
 	</ExchangeRateContext.Consumer>

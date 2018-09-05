@@ -2,7 +2,7 @@ import * as React from "react";
 import { Currency } from "../../enums/Currency";
 
 export type ExchangeRateContextDto = {
-	ratio: number;
+	ratio?: number;
 	amount?: number;
 	from: Currency;
 	to: Currency;

@@ -32,7 +32,10 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 						onChange={onCurrencyChange}
 						name="currency-to"
 					/>
-					<span>{amount ? amount * ratio : null}</span>
+					<div>
+						{!ratio && "No exchange rate available"}
+						{ratio && amount ? amount * ratio : null}
+					</div>
 				</div>
 				<div>
 					You have {getCurrencySymbol(to)}
