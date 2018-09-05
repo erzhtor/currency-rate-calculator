@@ -1,1 +1,1 @@
-export { getCurrencySymbol } from "./get-currecy-symbol";
+export { getCurrencySymbol } from "./get-currency-symbol";
