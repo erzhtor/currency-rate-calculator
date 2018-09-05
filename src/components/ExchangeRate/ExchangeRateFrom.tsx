@@ -8,8 +8,15 @@ import { ExchangeRateContext } from "./context";
 const StyledLayout = styled(StyledSection)`
 	display: flex;
 	flex-direction: column;
-	height: 100px;
+	height: 150px;
 	justify-content: space-around;
+`;
+
+const StyledInput = styled.input`
+	font-size: 24px;
+	width: 150px;
+	margin: 0 auto;
+	text-align: center;
 `;
 
 type ExchangeRateFromProps = {
@@ -17,6 +24,14 @@ type ExchangeRateFromProps = {
 	onAmountChange: (amount: number) => void;
 	balance: number;
 };
+
+function toNegative(value?: number) {
+	if (!value) {
+		return value;
+	}
+
+	return -Math.abs(value);
+}
 
 export const ExchangeRateFrom: React.StatelessComponent<
 	ExchangeRateFromProps
@@ -29,18 +44,16 @@ export const ExchangeRateFrom: React.StatelessComponent<
 						currencies={currencies}
 						value={from}
 						onChange={onCurrencyChange}
-						name="currency-to"
+						name="currency-from"
 					/>
 				</div>
-				<div>
-					<input
-						type="number"
-						value={amount}
-						onChange={event =>
-							onAmountChange(parseFloat(event.target.value))
-						}
-					/>
-				</div>
+				<StyledInput
+					type="number"
+					value={toNegative(amount)}
+					onChange={event =>
+						onAmountChange(Math.abs(parseFloat(event.target.value)))
+					}
+				/>
 				<div>
 					You have {getCurrencySymbol(from)}
 					{balance}

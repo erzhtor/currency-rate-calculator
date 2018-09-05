@@ -8,9 +8,21 @@ import { ExchangeRateContext } from "./context";
 const StyledLayout = styled(StyledSection)`
 	display: flex;
 	flex-direction: column;
-	height: 100px;
+	height: 150px;
 	justify-content: space-around;
 `;
+
+const StyledBalanceContainer = styled.div`
+	font-size: 25px;
+`;
+
+function ResultAmount({ ratio, amount }: { amount?: number; ratio?: number }) {
+	return (
+		<StyledBalanceContainer>
+			{ratio && amount ? `+${(amount * ratio).toFixed(2)}` : null}
+		</StyledBalanceContainer>
+	);
+}
 
 type ExchangeRateToProps = {
 	onCurrencyChange: (currency: Currency) => void;
@@ -32,10 +44,8 @@ export const ExchangeRateTo: React.StatelessComponent<ExchangeRateToProps> = ({
 						name="currency-to"
 					/>
 				</div>
-				<div>
-					{!ratio && "No exchange rate available"}
-					{ratio && amount ? (amount * ratio).toFixed(2) : null}
-				</div>
+				{!ratio && <div>No exchange rate available</div>}
+				<ResultAmount amount={amount} ratio={ratio} />
 				<div>
 					You have {getCurrencySymbol(to)}
 					{balance}
