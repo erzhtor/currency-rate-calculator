@@ -1,9 +1,5 @@
 # Exchange Rate Simple Widget
 
-#### Rates fetched from
-
-`https://api.exchangeratesapi.io/latest`. [To learn more](https://exchangeratesapi.io/)
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -30,3 +26,8 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
+
+#### Rates fetched from
+
+`https://api.exchangeratesapi.io/latest`. [To learn more](https://exchangeratesapi.io/)
+
